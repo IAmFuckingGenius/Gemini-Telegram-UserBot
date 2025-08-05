@@ -1,3 +1,5 @@
+from localization import loc
+loc.initialize()
 from telegram_bot import main
 import logging
 
@@ -8,6 +10,6 @@ if __name__ == '__main__':
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        logger.info("KeyboardInterrupt caught outside asyncio run (fallback).")
+        logger.info(loc.get_string("logs.script_terminated_by_user"))
     finally:
-        logger.info("Script execution finished.")
+        logger.info(loc.get_string("logs.script_execution_finished"))

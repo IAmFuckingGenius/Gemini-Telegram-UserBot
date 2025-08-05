@@ -393,16 +393,18 @@ async def call_gemini(session_key: str, parts: list, user_id: int, username: str
                 if hasattr(response, 'usage_metadata'):
                     prompt_tokens = response.usage_metadata.prompt_token_count
                     output_tokens = response.usage_metadata.candidates_token_count
-                    logger.info(loc.get_string("logs.gemini_token_stats", 
-                                               session=os.path.basename(session_key), 
-                                               prompt=prompt_tokens, 
-                                               output=output_tokens))
+                    
                     usm.update_session_stats(user_id, username, first_name, prompt_tokens, output_tokens)
 
-                if not response or not response.candidates or not response.candidates[0].content:
+                response_parts = None
+                if response and response.candidates and response.candidates[0].content:
+                    response_parts = response.candidates[0].content.parts
+
+                if not response_parts:
                     finish_reason_str = loc.get_string("errors.gemini_unknown_reason")
                     try:
-                        finish_reason_str = response.candidates[0].finish_reason.name
+                        if response and response.candidates:
+                            finish_reason_str = response.candidates[0].finish_reason.name
                     except (AttributeError, IndexError):
                         pass
                     
@@ -415,8 +417,7 @@ async def call_gemini(session_key: str, parts: list, user_id: int, username: str
                         reason_text = loc.get_string("errors.gemini_recitation_reason")
                     
                     return loc.get_string("errors.gemini_empty_or_blocked_response", reason=reason_text)
-
-                response_parts = response.candidates[0].content.parts
+                
                 append_history(session_key, "model", response_parts)
 
                 function_call = None

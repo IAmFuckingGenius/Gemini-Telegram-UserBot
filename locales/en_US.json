@@ -58,7 +58,11 @@
     "history_load_error": "Error loading history from {path}: {error}",
     "history_save_error": "Error saving history to {path}: {error}",
     "history_content_truncated": " ... (content truncated)",
-    "history_part_deserialize_error": "Failed to deserialize history part: {part}. Error: {e}"
+    "history_part_deserialize_error": "Failed to deserialize history part: {part}. Error: {e}",
+    "script_terminated_by_user": "Script terminated by user.",
+    "script_execution_finished": "Script execution finished.",
+    "gemini_token_metadata_incomplete": "Token usage metadata in the API response was incomplete. Stats may not be fully accurate.",
+    "gemini_token_metadata_missing": "Token usage metadata was missing from the API response."
   },
   "prompts": {
     "search_specialist": "You are an AI assistant specializing in information retrieval. Your sole task is to execute the following search query and return a detailed, structured summary of the information found. Do not add any extra commentary. Query: '{search_query}'"

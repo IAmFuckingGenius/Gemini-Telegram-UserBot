@@ -35,3 +35,8 @@ HISTORY_SOURCE_GROUPS = [int(x.strip()) for x in os.environ.get('HISTORY_SOURCE_
 DEFAULT_GEMINI_MODEL = "gemini-2.5-pro"
 DEFAULT_IMAGEN_MODEL = "imagen-4.0-generate-preview-06-06" 
 DEFAULT_VIDEO_MODEL = "veo-3.0-generate-preview"
+
+AVAILABLE_LANGUAGES = {
+    "en_US": "English",
+    "ru_RU": "Русский"
+}

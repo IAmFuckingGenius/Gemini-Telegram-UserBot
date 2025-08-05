@@ -26,3 +26,4 @@ session_name.*
 *.swp
 *.swo
 permissions.json
+.lang

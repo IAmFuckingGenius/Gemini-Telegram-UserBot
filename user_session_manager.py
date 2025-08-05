@@ -14,11 +14,11 @@ logger = logging.getLogger("SessionManager")
 
 PRICES = {
     "gemini-2.5-pro": {
-        "input": 1.25,
+        "input": 2.50,
         "output": 10.00
     },
     "gemini-2.5-flash": {
-        "input": 0.30,
+        "input": 1.25,
         "output": 2.50
     }
 }
@@ -234,6 +234,9 @@ def update_session_stats(user_id: int, username: str, first_name: str, prompt_to
     active_id = profile.get('active_session_id')
     if not active_id or active_id not in profile['sessions']: return
 
+    safe_prompt_tokens = prompt_tokens or 0
+    safe_output_tokens = output_tokens or 0
+
     session_data = profile['sessions'][active_id]
     
     if not isinstance(session_data, dict):
@@ -244,15 +247,17 @@ def update_session_stats(user_id: int, username: str, first_name: str, prompt_to
         session_data['stats'] = {"prompt_tokens": 0, "output_tokens": 0, "total_tokens": 0, "total_cost": 0.0}
     
     stats = session_data['stats']
-    stats['prompt_tokens'] = prompt_tokens
-    stats['output_tokens'] = output_tokens
-    stats['total_tokens'] = prompt_tokens + output_tokens
+    stats['prompt_tokens'] = safe_prompt_tokens
+    stats['output_tokens'] = safe_output_tokens
+    stats['total_tokens'] = safe_prompt_tokens + safe_output_tokens
 
-    price_model_key = "gemini-2.5-pro"
+    from model_manager import get_current_model
+    price_model_key = get_current_model('chat')
+
     price_model = PRICES.get(price_model_key)
     if price_model:
-        cost_input = (prompt_tokens / 1_000_000) * price_model['input']
-        cost_output = (output_tokens / 1_000_000) * price_model['output']
+        cost_input = (safe_prompt_tokens / 1_000_000) * price_model['input']
+        cost_output = (safe_output_tokens / 1_000_000) * price_model['output']
         stats['total_cost'] = stats.get('total_cost', 0.0) + cost_input + cost_output
     else:
         logger.warning(loc.get_string("logs.price_model_not_found", model=price_model_key))
