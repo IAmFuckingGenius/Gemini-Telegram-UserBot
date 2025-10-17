@@ -48,7 +48,7 @@ The entire bot interface, from command replies to error messages, is controlled 
 
 1.  **Clone the Repo:**
     ```bash
-    git clone https://github.com/VotisMUV/Gemini-Telegram-UserBot.git
+    git clone https://github.com/IAmFuckingGenius/Gemini-Telegram-UserBot.git
     cd Gemini-Telegram-UserBot
     ```
 
